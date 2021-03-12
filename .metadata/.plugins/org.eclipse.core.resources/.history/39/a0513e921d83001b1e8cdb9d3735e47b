@@ -1,0 +1,57 @@
+package com.tweetapp.console_based_app.dao;
+
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.tweetapp.console_based_app.entity.User;
+
+public class UserDao {
+	
+	UserDao(){
+		try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/tweetapp?"
+                            + "user=root&password=");
+	}catch(Exception e) {
+		System.out.println("Database connection established!!");
+	}
+	
+	List<User> userList = new ArrayList<User>();
+	private Connection connect = null;
+    private Statement statement = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
+	
+	//register user
+	public Boolean registerUser(User user) {
+		userList.add(user);
+		System.out.println(Arrays.toString(userList.toArray()));
+		return true;
+	}
+	
+	//update password
+	public Boolean updatePassword(int userId, String newPassword) {
+		userList.stream().filter(a->a.getUserId()==userId).collect(Collectors.toList())
+		.get(0).password = newPassword;
+		return true;
+	}
+	
+	//retrieve all users
+	public List<User> getAllUsers(){
+		return userList;
+	}
+	
+	//retrieve user by id
+	public User getUserById(int userId) {
+		return userList.stream().filter(a->a.getUserId()==userId).collect(Collectors.toList())
+				.get(0);
+	}
+	
+}

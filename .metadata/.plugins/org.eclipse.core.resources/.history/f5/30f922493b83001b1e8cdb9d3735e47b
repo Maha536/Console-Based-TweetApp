@@ -1,0 +1,25 @@
+package com.tweetapp.console_based_app.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.tweetapp.console_based_app.entity.Tweet;
+
+public class TweetDao {
+	
+	List<Tweet> tweetList = new ArrayList<Tweet>();
+	
+	public boolean createTweet(Tweet tweet) {
+		tweetList.add(tweet);
+		return true;
+	}
+	
+	public List<Tweet> getAllTweets(){
+		return tweetList;
+	}
+	
+	public List<Tweet> getTweetsByUserId(int userId){
+		return tweetList.stream().filter(a->a.getUserId()==userId).collect(Collectors.toList());
+	}
+}

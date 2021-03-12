@@ -1,0 +1,90 @@
+package com.tweetapp.console_based_app.dao;
+
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.tweetapp.console_based_app.entity.User;
+
+public class UserDao {
+	List<User> userList = new ArrayList<User>();
+	private Connection connect = null;
+    private Statement statement = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
+	public void UserDao(){
+		try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/tweetapp?"
+                            + "user=root&password=");
+			
+		}
+		catch(Exception e) {
+			
+		}
+	}
+	
+	
+	//register user
+	public Boolean registerUser(User user) {
+		//String query = "insert into user(firstname,lastname,gender,dob,email,password,status) values (?,?,?,?,?,?,?)";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/tweetapp?"
+                            + "user=root&password=");
+            String sqlCreate = "CREATE TABLE IF NOT EXISTS USER"
+                    + "   (id            INTEGER AUTO_INCREMENT PRIMARY KEY,"
+                    + "   firstname          VARCHAR(20),"
+                    + "   lastname           VARCHAR(20),"
+                    + "   gender           VARCHAR(20),"
+                    + "   dob     VARCHAR(15),"
+                    + "   email VARCHAR(30),"
+                    + "	  password VARCHAR(15),"
+                    + "	  status BOOLEAN)";
+
+        		    Statement stmt = connect.createStatement();
+        		    stmt.execute(sqlCreate);
+			PreparedStatement pstmt = connect.prepareStatement("insert into user(firstname,lastname,gender,dob,email,password,status) values (?,?,?,?,?,?,?)");
+			pstmt.setString(1, user.getFirstName());
+			pstmt.setString(2, user.getLastName());
+			pstmt.setString(3, user.getGender());
+			pstmt.setString(4, user.getDob());
+			pstmt.setString(5, user.getEmail());
+			pstmt.setString(6, user.getPassword());
+			pstmt.setBoolean(7, false);
+			int a =pstmt.executeUpdate();
+			System.out.println("a ==> "+a);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//userList.add(user);
+		return true;
+	}
+	
+	//update password
+	public Boolean updatePassword(int userId, String newPassword) {
+		userList.stream().filter(a->a.getUserId()==userId).collect(Collectors.toList())
+		.get(0).password = newPassword;
+		return true;
+	}
+	
+	//retrieve all users
+	public List<User> getAllUsers(){
+		return userList;
+	}
+	
+	//retrieve user by id
+	public User getUserById(int userId) {
+		return userList.stream().filter(a->a.getUserId()==userId).collect(Collectors.toList())
+				.get(0);
+	}
+	
+}

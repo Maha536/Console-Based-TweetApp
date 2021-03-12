@@ -1,0 +1,47 @@
+package com.tweetapp.console_based_app;
+
+import java.util.Scanner;
+import java.util.logging.Logger;
+
+import com.tweetapp.console_based_app.utils.RegisterUtil;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+	public static boolean loggedInStatus = false;
+	
+    public static void main( String[] args )
+    {	
+    	RegisterUtil userUtil = new RegisterUtil();
+    
+    	if(!loggedInStatus) {
+	    	Scanner scanner = new Scanner(System.in);
+	        System.out.println( "1.register\n2.login\n3.forgot password");
+	        System.out.println("Enter your choice : ");
+	        int option = scanner.nextInt();
+	        switch(option) {
+	        case 1 : userUtil.registerUser();
+        			 main(args);
+        			 break;
+	        case 2 : if(userUtil.login().get("status")==1) {
+	        			loggedInStatus = true;
+	        		 }else {
+	        			 System.out.println("Invalid email or password");
+	        		 }
+	        		 main(args);
+	        		 break;
+	        		 
+	        case 3 : userUtil.forgotPassword();
+	        		 main(args);
+	        		 break;
+	        default : System.out.println("Invalid Option. Please try again..");
+	        		  main(args);
+	        			
+	        }
+	       
+    	}
+    }
+}

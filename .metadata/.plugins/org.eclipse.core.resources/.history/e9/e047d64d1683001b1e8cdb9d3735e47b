@@ -1,0 +1,25 @@
+package com.tweetapp.console_based_app.service;
+
+import java.util.List;
+
+
+import com.tweetapp.console_based_app.dao.TweetDao;
+import com.tweetapp.console_based_app.entity.Tweet;
+
+public class TweetService {
+	
+	TweetDao tweetDao = new TweetDao();
+	
+	public boolean createTweet(Tweet tweet) {
+		tweetDao.createTweet(tweet);
+		return true;
+	}
+	
+	public List<Tweet> getAllTweets(){
+		return tweetDao.getAllTweets();
+	}
+	
+	public List<Tweet> getTweetsByUserId(int userId){
+		return tweetDao.getTweetsByUserId(userId);
+	}
+}
