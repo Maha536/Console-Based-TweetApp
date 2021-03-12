@@ -83,21 +83,74 @@ public class UserDao {
 	    	 }
 	     }
 		}catch(Exception e) {
-			res.put("status", 1);
+			res.put("status", -1);
 		}
 		return res;
 	}
 	
+	//forgot pasword
+	public void forgotPassword(String email,String newPassword) {
+		try {
+		preparedStatement = connect.prepareStatement("UPDATE user SET password = ? where email = ?");
+		preparedStatement.setString(1, newPassword);
+		preparedStatement.setString(2, email);
+		if(preparedStatement.executeUpdate() == 1) {
+			System.out.println("Password Changed...");
+		}else {
+			System.out.println("Invalid email/user...");
+		}
+		}catch(Exception e){
+			
+		}
+		
+	}
+	
 	//update password
-	public Boolean updatePassword(int userId, String newPassword) {
-		userList.stream().filter(a->a.getUserId()==userId).collect(Collectors.toList())
-		.get(0).password = newPassword;
+	public Boolean updatePassword(int userId,String oldPassword, String newPassword) {
+		try {
+			preparedStatement = connect.prepareStatement("UPDATE user SET password = ? where id = ? AND password = ?");
+			preparedStatement.setString(1, newPassword);
+			preparedStatement.setInt(2, userId);
+			preparedStatement.setString(3, oldPassword);
+			if(preparedStatement.executeUpdate() == 1) {
+				System.out.println("Password Changed...");
+			}else {
+				System.out.println("Invalid email/user...");
+			}
+			}catch(Exception e){
+				
+			}
 		return true;
 	}
 	
 	//retrieve all users
-	public List<User> getAllUsers(){
-		return userList;
+	public ResultSet getAllUsers(){
+		try {
+		statement = connect.createStatement();
+	    String sql = "SELECT firstname, lastname FROM user";
+	    resultSet = statement.executeQuery(sql);
+	    return resultSet;
+		}catch(Exception e) {
+			return null;
+		}
+	}
+	
+	//logout
+	public boolean logout(int userId) {
+		try {
+			preparedStatement = connect.prepareStatement("UPDATE user SET status = ? where id = ?");
+			preparedStatement.setBoolean(1, false);
+			preparedStatement.setInt(2, userId);
+			if(preparedStatement.executeUpdate() == 1) {
+				System.out.println("Logged out...");
+				return true;
+			}else {
+				System.out.println("Invalid email/user...");
+				return false;
+			}
+			}catch(Exception e){
+				return false;
+			}
 	}
 	
 	//retrieve user by id

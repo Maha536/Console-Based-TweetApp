@@ -1,5 +1,6 @@
 package com.tweetapp.console_based_app.service;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 
@@ -16,12 +17,26 @@ public class TweetService {
 	}
 	
 	public boolean getAllTweets(){
-		tweetDao.getAllTweets().stream().forEach(t->System.out.println(t.tweet));
+		ResultSet rs = tweetDao.getAllTweets();
+		try {
+			while(rs.next()) {
+				System.out.println(rs.getInt("id")+" "+rs.getString("tweet"));
+			}
+		}catch(Exception e) {
+			
+		}
 		return true;
 	}
 	
 	public boolean getTweetsByUserId(int userId){
-		tweetDao.getTweetsByUserId(userId).stream().forEach(t->System.out.println(t.tweet));
+		ResultSet rs = tweetDao.getTweetsByUserId(userId);
+		try {
+			while(rs.next()) {
+				System.out.println(rs.getInt("id")+" "+rs.getString("tweet"));
+			}
+		}catch(Exception e) {
+			
+		}
 		return true;
 	}
 }

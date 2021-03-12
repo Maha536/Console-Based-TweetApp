@@ -1,5 +1,6 @@
 package com.tweetapp.console_based_app.service;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,17 +26,31 @@ public class UserService {
 		return userDao.login(email, password);
 	}
 	
-	public Boolean updatePassword(int userId, String oldPassword, String newPassword) {
-		String pass = userDao.getUserById(userId).password;
-		if(oldPassword.equals(pass)) {
-			userDao.updatePassword(userId, newPassword);
-			return true;
-		}
-		return false;
+	//logout
+	public boolean logout(int userId) {
+		return userDao.logout(userId);
 	}
 	
+	//forgot password
+	public void forgot(String email,String newPassword) {
+		userDao.forgotPassword(email, newPassword);
+	}
+	
+	//reset password
+	public Boolean updatePassword(int userId, String oldPassword, String newPassword) {
+		return userDao.updatePassword(userId, oldPassword, newPassword);
+	}
+	
+	//get All users
 	public boolean getAllUsers(){
-		userDao.getAllUsers().stream().forEach(user->System.out.println(user.firstName+" "+user.lastName));
+		ResultSet rs = userDao.getAllUsers();
+		try {
+		while(rs.next()) {
+			System.out.println(rs.getString("firstname")+" "+rs.getString("lastname"));
+		}
+		}catch(Exception e) {
+			System.out.println("No users found..");
+		}
 		return true;
 	}
 }

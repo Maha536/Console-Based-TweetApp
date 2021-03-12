@@ -104,17 +104,16 @@ public class RegisterUtil {
 	
 	//logout
 	public boolean logout(int userId) {
-		return true;
+		return userService.logout(userId);
 	}
 	
 	//forgot password
 	public boolean forgotPassword() {
-		System.out.println("enter your dob : ");
-		dob = scanner.nextLine();
-		
 		System.out.println("enter your email : ");
 		email = scanner.nextLine();
-		
+		System.out.println("enter your new password : ");
+		String newPassword = scanner.nextLine();
+		userService.forgot(email, newPassword);
 		return true;
 	}
 	

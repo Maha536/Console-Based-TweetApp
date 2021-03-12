@@ -49,11 +49,25 @@ public class TweetDao {
 		return true;
 	}
 	
-	public List<Tweet> getAllTweets(){
-		return tweetList;
+	public ResultSet getAllTweets(){
+		try {
+		 statement = connect.createStatement();
+	     String sql = "SELECT * FROM tweet";
+	     resultSet = statement.executeQuery(sql);
+	     return resultSet;
+		}catch(Exception e) {
+			return null;
+		}
 	}
 	
-	public List<Tweet> getTweetsByUserId(int userId){
-		return tweetList.stream().filter(a->a.getUserId()==userId).collect(Collectors.toList());
+	public ResultSet getTweetsByUserId(int userId){
+		try {
+			 statement = connect.createStatement();
+		     String sql = "SELECT * FROM tweet where userid = "+userId;
+		     resultSet = statement.executeQuery(sql);
+		     return resultSet;
+			}catch(Exception e) {
+				return null;
+			}
 	}
 }
