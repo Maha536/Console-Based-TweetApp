@@ -67,6 +67,7 @@ public class UserDao {
 	//login 
 	public Map<String,Integer> login(String email,  String password) {
 		Map<String,Integer> res = new HashMap<>();
+		res.put("status", -1);
 		try {
 		 statement = connect.createStatement();
 	     String sql = "SELECT id,email,password from user";
@@ -83,7 +84,7 @@ public class UserDao {
 	    	 }
 	     }
 		}catch(Exception e) {
-			res.put("status", -1);
+			System.out.println("Something went wrong. Please try again..");
 		}
 		return res;
 	}
@@ -91,16 +92,16 @@ public class UserDao {
 	//forgot pasword
 	public void forgotPassword(String email,String newPassword) {
 		try {
-		preparedStatement = connect.prepareStatement("UPDATE user SET password = ? where email = ?");
-		preparedStatement.setString(1, newPassword);
-		preparedStatement.setString(2, email);
-		if(preparedStatement.executeUpdate() == 1) {
-			System.out.println("Password Changed...");
-		}else {
-			System.out.println("Invalid email/user...");
-		}
+			preparedStatement = connect.prepareStatement("UPDATE user SET password = ? where email = ?");
+			preparedStatement.setString(1, newPassword);
+			preparedStatement.setString(2, email);
+			if(preparedStatement.executeUpdate() == 1) {
+				System.out.println("Password Changed...");
+			}else {
+				System.out.println("Invalid email/user...");
+			}
 		}catch(Exception e){
-			
+			System.out.println("Something went wrong. Please try again..");
 		}
 		
 	}
@@ -115,11 +116,11 @@ public class UserDao {
 			if(preparedStatement.executeUpdate() == 1) {
 				System.out.println("Password Changed...");
 			}else {
-				System.out.println("Invalid email/user...");
+				System.out.println("Invalid password...");
 			}
-			}catch(Exception e){
-				
-			}
+		}catch(Exception e){
+			System.out.println("Something went wrong. Please try again..");
+		}
 		return true;
 	}
 	
@@ -131,6 +132,7 @@ public class UserDao {
 	    resultSet = statement.executeQuery(sql);
 	    return resultSet;
 		}catch(Exception e) {
+			System.out.println("Something went wrong. Please try again..");
 			return null;
 		}
 	}
@@ -149,14 +151,10 @@ public class UserDao {
 				return false;
 			}
 			}catch(Exception e){
+				System.out.println("Something went wrong. Please try again..");
 				return false;
 			}
 	}
 	
-	//retrieve user by id
-	public User getUserById(int userId) {
-		return userList.stream().filter(a->a.getUserId()==userId).collect(Collectors.toList())
-				.get(0);
-	}
 	
 }

@@ -25,8 +25,8 @@ public class TweetDao {
 		    String sqlCreate = "CREATE TABLE IF NOT EXISTS TWEET"
 		            + "   (id  INTEGER AUTO_INCREMENT PRIMARY KEY,"
 		            + "   userid INTEGER,"
-		            + "   tweet VARCHAR(100))";
-		            
+		            + "   tweet VARCHAR(100),"
+		            + "   created DATE)";
 				    Statement stmt = connect.createStatement();
 				    stmt.execute(sqlCreate);
 		    	}catch(Exception e) {
@@ -34,14 +34,15 @@ public class TweetDao {
 		    	}
 	}
 	
-	List<Tweet> tweetList = new ArrayList<Tweet>();
 	
 	public boolean createTweet(Tweet tweet) {
 		try {
-			preparedStatement = connect.prepareStatement("insert into tweet(userid,tweet) values(?,?)");
+			preparedStatement = connect.prepareStatement("insert into tweet(userid,tweet,created) values(?,?,?)");
 			preparedStatement.setInt(1, tweet.getUserId());
 			preparedStatement.setString(2, tweet.getTweet());
+			preparedStatement.setDate(3, tweet.getCreated());
 			preparedStatement.executeUpdate();
+			System.out.println("Tweet uploaded successfully");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Something went wrong! Tweet not uploaded..");
@@ -50,24 +51,29 @@ public class TweetDao {
 	}
 	
 	public ResultSet getAllTweets(){
+		
 		try {
 		 statement = connect.createStatement();
 	     String sql = "SELECT * FROM tweet";
 	     resultSet = statement.executeQuery(sql);
 	     return resultSet;
 		}catch(Exception e) {
+			System.out.println("Something went wrong. Please try again..");
 			return null;
 		}
 	}
 	
 	public ResultSet getTweetsByUserId(int userId){
+		
 		try {
 			 statement = connect.createStatement();
 		     String sql = "SELECT * FROM tweet where userid = "+userId;
 		     resultSet = statement.executeQuery(sql);
+		     
 		     return resultSet;
-			}catch(Exception e) {
+		}catch(Exception e) {
+				System.out.println("Something went wrong. Please try again..");
 				return null;
-			}
+		}
 	}
 }

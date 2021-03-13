@@ -1,11 +1,22 @@
 package com.tweetapp.console_based_app.entity;
 
+import java.sql.Date;
+
 public class Tweet {
 	
 	public Integer userId;
 	public Integer tweetId;
 	public String tweet;
+	public Date created;
 	
+	
+	
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(java.sql.Date created) {
+		this.created = created;
+	}
 	public Integer getUserId() {
 		return userId;
 	}

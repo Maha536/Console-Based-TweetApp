@@ -20,7 +20,7 @@ public class App
     	RegisterUtil userUtil = new RegisterUtil();
     	
     	if(!loggedInStatus) {
-	        System.out.println( "1.register\n2.login\n3.forgot password");
+	        System.out.println( "*************************************************\n1.register\n2.login\n3.forgot password");
 	        System.out.println("Enter your choice : ");
 	        int option = scanner.nextInt();
 	        switch(option) {
@@ -45,7 +45,7 @@ public class App
 	        	
 	        }
     	}else {
-    		System.out.println( "1.Post a tweet\n2.View my tweets\n3.View all tweets\n4.View All Users\n5.Reset Password\n6.Logout");
+    		System.out.println( "*************************************************\n1.Post a tweet\n2.View my tweets\n3.View all tweets\n4.View All Users\n5.Reset Password\n6.Logout");
 	        System.out.println("Enter your choice : ");
 	        int option = scanner.nextInt();
 	        switch(option) {

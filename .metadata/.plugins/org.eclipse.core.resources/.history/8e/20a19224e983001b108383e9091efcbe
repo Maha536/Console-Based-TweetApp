@@ -1,0 +1,56 @@
+package com.tweetapp.console_based_app.service;
+
+import java.sql.ResultSet;
+import java.util.Date;
+import java.util.List;
+
+
+import com.tweetapp.console_based_app.dao.TweetDao;
+import com.tweetapp.console_based_app.entity.Tweet;
+
+public class TweetService {
+	
+	TweetDao tweetDao = new TweetDao();
+	
+	public boolean createTweet(Tweet tweet) {
+		java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+		tweet.setCreated(date);
+		tweetDao.createTweet(tweet);
+		return true;
+	}
+	
+	public boolean getAllTweets(){
+		System.out.println("in Service");
+		ResultSet rs = tweetDao.getAllTweets();
+		try {
+			while(rs.next()) {
+				/*if(rs.getDate("created") == null && rs.getString("tweet")==null) {
+					System.out.println("No tweets found..");
+					return true;
+				}*/
+				System.out.println(rs.getDate("created")+" "+rs.getString("tweet"));
+			}
+		}catch(Exception e) {
+			System.out.println("Something went wrong. Please try again ");
+		}
+		return true;
+	}
+	
+	public boolean getTweetsByUserId(int userId){
+		System.out.println("in Service");
+		ResultSet rs = tweetDao.getTweetsByUserId(userId);
+		try {
+			if(!rs.next()) {
+				System.out.println("No tweets found.. ");
+				return true;
+			}
+			rs.first();
+			while(rs.next()) {
+				System.out.println(rs.getDate("created")+" "+rs.getString("tweet"));
+			}
+		}catch(Exception e) {
+			System.out.println("Something went wrong. Please try again ");
+		}
+		return true;
+	}
+}

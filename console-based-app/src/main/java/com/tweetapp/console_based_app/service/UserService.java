@@ -45,11 +45,15 @@ public class UserService {
 	public boolean getAllUsers(){
 		ResultSet rs = userDao.getAllUsers();
 		try {
-		while(rs.next()) {
-			System.out.println(rs.getString("firstname")+" "+rs.getString("lastname"));
-		}
+			while(rs.next()) {
+				if(rs.getString("firstname")==null && rs.getString("lastname")==null) {
+					System.out.println("No users found..");
+					return true;
+				}
+				System.out.println(rs.getString("firstname")+" "+rs.getString("lastname"));
+			}
 		}catch(Exception e) {
-			System.out.println("No users found..");
+			System.out.println("Something went wrong. Please try again...");
 		}
 		return true;
 	}

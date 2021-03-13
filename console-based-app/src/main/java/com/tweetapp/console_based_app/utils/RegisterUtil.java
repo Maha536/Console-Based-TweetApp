@@ -28,30 +28,62 @@ public class RegisterUtil {
 	//create user
 	public Boolean registerUser() {
 		User user = new User();
+		while(true) {
+			System.out.println("enter your first name : ");
+			firstName = scanner.nextLine();
+			if(firstName.length()>=3) {
+				user.setFirstName(firstName);
+				break;
+			}
+			System.out.println("firstname must have a length of 3 characters or more");
+		}
+		while(true) {
+			System.out.println("enter your last name : ");
+			lastName = scanner.nextLine();
+			if(lastName.length()>=3) {
+				user.setLastName(lastName);
+				break;
+			}
+			System.out.println("lastname must have a length of 3 characters or more");
+		}
+		while(true) {
+			System.out.println("enter your gender : ");
+			gender = scanner.nextLine();
+			if(gender.equals("male") || gender.equals("female")) {
+				user.setGender(gender);
+				break;
+			}
+			System.out.println("please enter \'male\' or \'female\'");
+		}
+		while(true) {
+			System.out.println("enter your dob : ");
+			dob = scanner.nextLine();
+			if(dob.matches("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$")) {
+				user.setDob(dob);
+				break;
+			}
+			System.out.println("please enter valid date in yyyy-mm-dd format");
+		}
 		
-		System.out.println("enter your first name : ");
-		firstName = scanner.nextLine();
-		user.setFirstName(firstName);
+		while(true) {
+			System.out.println("enter your email : ");
+			email = scanner.nextLine();
+			if(email.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+				user.setEmail(email);
+				break;
+			}
+			System.out.println("please enter valid email address");
+		}
 		
-		System.out.println("enter your last name : ");
-		lastName = scanner.nextLine();
-		user.setLastName(lastName);
-		
-		System.out.println("enter your gender : ");
-		gender = scanner.nextLine();
-		user.setGender(gender);
-		
-		System.out.println("enter your dob : ");
-		dob = scanner.nextLine();
-		user.setDob(dob);
-		
-		System.out.println("enter your email : ");
-		email = scanner.nextLine();
-		user.setEmail(email);
-		
-		System.out.println("enter your password : ");
-		password = scanner.nextLine();
-		user.setPassword(password);
+		while(true) {
+			System.out.println("enter your password : ");
+			password = scanner.nextLine();
+			if(password.length() >= 6) {
+				user.setPassword(password);
+				break;
+			}
+			System.out.println("password must be a length of 6 to 10");
+		}
 		
 		userService.registerUser(user);
 		
@@ -60,11 +92,23 @@ public class RegisterUtil {
 	
 	//login
 	public Map<String,Integer> login(){
-		System.out.println("enter your email : ");
-		email = scanner.nextLine();
+		while(true) {
+			System.out.println("enter your email : ");
+			email = scanner.nextLine();
+			if(email.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+				break;
+			}
+			System.out.println("please enter valid email address");
+		}
 		
-		System.out.println("enter your password : ");
-		password = scanner.nextLine();
+		while(true) {
+			System.out.println("enter your password : ");
+			password = scanner.nextLine();
+			if(password.length() >= 6) {
+				break;
+			}
+			System.out.println("password must be a length of 6 to 10");
+		}
 		
 		return userService.login(email, password);
 		
@@ -73,10 +117,22 @@ public class RegisterUtil {
 	//reset password
 	public Boolean updateUser(int userId) {
 		String newPassword,oldPassword;
-		System.out.println("enter your current password : ");
-		oldPassword = scanner.nextLine();
-		System.out.println("enter your new password : ");
-		newPassword = scanner.nextLine();
+		while(true) {
+			System.out.println("enter your password : ");
+			oldPassword = scanner.nextLine();
+			if(oldPassword.length() >= 6) {
+				break;
+			}
+			System.out.println("password must be a length of 6 to 10");
+		}
+		while(true) {
+			System.out.println("enter your new password : ");
+			newPassword = scanner.nextLine();
+			if(newPassword.length() >= 6) {
+				break;
+			}
+			System.out.println("password must be a length of 6 to 10");
+		}
 		userService.updatePassword(userId,oldPassword, newPassword);
 		return true;
 	}
@@ -84,8 +140,14 @@ public class RegisterUtil {
 	//post a tweet
 	public Boolean createTweet(int userId) {
 		Tweet tweetObj = new Tweet();
-		System.out.println("Please type your tweet : ");
-		tweet = scanner.nextLine();
+		while(true) {
+			System.out.println("Please type your tweet : ");
+			tweet = scanner.nextLine();
+			if(tweet.length()>0) {
+				break;
+			}
+			System.out.println("tweet should not be empty");
+		}
 		tweetObj.setUserId(userId);
 		tweetObj.setTweet(tweet);
 		tweetService.createTweet(tweetObj);
@@ -109,10 +171,24 @@ public class RegisterUtil {
 	
 	//forgot password
 	public boolean forgotPassword() {
-		System.out.println("enter your email : ");
-		email = scanner.nextLine();
-		System.out.println("enter your new password : ");
-		String newPassword = scanner.nextLine();
+		String newPassword;
+		while(true) {
+			System.out.println("enter your email : ");
+			email = scanner.nextLine();
+			if(email.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+				break;
+			}
+			System.out.println("please enter valid email address");
+		}
+		
+		while(true) {
+			System.out.println("enter your password : ");
+			newPassword = scanner.nextLine();
+			if(newPassword.length() >= 6) {
+				break;
+			}
+			System.out.println("password must be a length of 6 to 10");
+		}
 		userService.forgot(email, newPassword);
 		return true;
 	}
